@@ -2,21 +2,27 @@ import { ContactsItem } from 'components/ContactsItem/ContactsItem';
 import { ContactsListItem } from './ContactList.styled';
 import PropTypes from 'prop-types';
 
-export const ContactsList = ({ contactsArr, filter, deleteContactItem }) => {
+export const ContactsList = ({
+  contactsArr,
+  filterName,
+  deleteContactItem,
+}) => {
+  const contactsList = filterName
+    ? contactsArr.filter(contact =>
+        contact.name.toLowerCase().includes(filterName.toLowerCase().trim())
+      )
+    : contactsArr;
   return (
     <ul>
-      {contactsArr.map(
-        contact =>
-          contact.name.toLowerCase().includes(filter.toLowerCase().trim()) && (
-            <ContactsListItem key={contact.id}>
-              <ContactsItem
-                name={contact.name}
-                number={contact.number}
-                deleteContactItem={deleteContactItem}
-              />
-            </ContactsListItem>
-          )
-      )}
+      {contactsList.map(contact => (
+        <ContactsListItem key={contact.id}>
+          <ContactsItem
+            name={contact.name}
+            number={contact.number}
+            deleteContactItem={deleteContactItem}
+          />
+        </ContactsListItem>
+      ))}
     </ul>
   );
 };
@@ -28,5 +34,5 @@ ContactsList.propTypes = {
       number: PropTypes.string,
     })
   ),
-  filter: PropTypes.string,
+  filterName: PropTypes.string,
 };

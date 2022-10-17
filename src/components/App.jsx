@@ -64,7 +64,7 @@ export class App extends Component {
           <FilterContacts filterContactsHandler={this.filterContactsHandler} />
           <ContactsList
             contactsArr={this.state.contacts}
-            filter={this.state.filter}
+            filterName={this.state.filter}
             deleteContactItem={this.deleteContactItem}
           />
         </Section>
