@@ -1,5 +1,6 @@
 import { ContactsItem } from 'components/ContactsItem/ContactsItem';
 import { ContactsListItem } from './ContactList.styled';
+import PropTypes from 'prop-types';
 
 export const ContactsList = ({ contactsArr, filter, deleteContactItem }) => {
   return (
@@ -18,4 +19,14 @@ export const ContactsList = ({ contactsArr, filter, deleteContactItem }) => {
       )}
     </ul>
   );
+};
+
+ContactsList.propTypes = {
+  contactsArr: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string,
+      number: PropTypes.string,
+    })
+  ),
+  filter: PropTypes.string,
 };

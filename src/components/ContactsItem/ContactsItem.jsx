@@ -1,4 +1,5 @@
 import { Thumb } from './ContactsItem.styled';
+import PropTypes from 'prop-types';
 
 export const ContactsItem = ({ name, number, deleteContactItem }) => {
   return (
@@ -11,4 +12,9 @@ export const ContactsItem = ({ name, number, deleteContactItem }) => {
       </button>
     </>
   );
+};
+
+ContactsItem.propTypes = {
+  name: PropTypes.string,
+  number: PropTypes.string,
 };
