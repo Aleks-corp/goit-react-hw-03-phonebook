@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { Input } from 'components/Phonebook/Phonebook.styled';
-import { Label } from './Filter,styled';
+import { Label } from './Filter.styled';
 
 export const FilterContacts = ({ filterValue, filterContactsHandler }) => (
   <Label>
