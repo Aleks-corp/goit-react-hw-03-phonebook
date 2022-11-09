@@ -4,7 +4,7 @@ import { Phonebook } from './Phonebook/Phonebook';
 import { ContactsList } from './ContactsList/ContactsList';
 import { FilterContacts } from './Filter/Filter';
 import { nanoid } from 'nanoid';
-import { contactsDefault } from '../contacts';
+import contactsDefault from '../contacts.json';
 
 export class App extends Component {
   state = {
