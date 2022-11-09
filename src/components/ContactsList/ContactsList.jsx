@@ -4,12 +4,14 @@ import PropTypes from 'prop-types';
 
 export const ContactsList = ({
   contactsArr,
-  filterName,
+  normalizedFilterValue,
   deleteContactItem,
 }) => {
-  const contactsList = filterName
+  const contactsList = normalizedFilterValue
     ? contactsArr.filter(contact =>
-        contact.name.toLowerCase().includes(filterName.toLowerCase().trim())
+        contact.name
+          .toLowerCase()
+          .includes(normalizedFilterValue.toLowerCase().trim())
       )
     : contactsArr;
   return (
@@ -17,6 +19,7 @@ export const ContactsList = ({
       {contactsList.map(contact => (
         <ContactsListItem key={contact.id}>
           <ContactsItem
+            id={contact.id}
             name={contact.name}
             number={contact.number}
             deleteContactItem={deleteContactItem}

@@ -1,13 +1,13 @@
 import { Thumb } from './ContactsItem.styled';
 import PropTypes from 'prop-types';
 
-export const ContactsItem = ({ name, number, deleteContactItem }) => {
+export const ContactsItem = ({ id, name, number, deleteContactItem }) => {
   return (
     <>
       <Thumb>
         {name}: {number}
       </Thumb>
-      <button type="button" onClick={() => deleteContactItem(name)}>
+      <button type="button" onClick={() => deleteContactItem(id)}>
         Delete
       </button>
     </>

@@ -4,43 +4,54 @@ import { Phonebook } from './Phonebook/Phonebook';
 import { ContactsList } from './ContactsList/ContactsList';
 import { FilterContacts } from './Filter/Filter';
 import { nanoid } from 'nanoid';
+import { contactsDefault } from '../contacts';
 
 export class App extends Component {
   state = {
-    contacts: [
-      { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
-      { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
-      { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
-      { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
-      { id: 'id-5', name: 'Aleks Cole', number: '533-23-76' },
-    ],
-    filter: '',
+    contacts: [],
+    filterValue: '',
   };
+  componentDidMount() {
+    this.setState({
+      contacts: localStorage.getItem('phonebook-contacts')
+        ? JSON.parse(localStorage.getItem('phonebook-contacts'))
+        : contactsDefault,
+    });
+  }
 
-  onFormSubmit = data => {
-    data.id = nanoid();
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.contacts !== this.state.contacts) {
+      localStorage.setItem(
+        'phonebook-contacts',
+        JSON.stringify(this.state.contacts)
+      );
+    }
+  }
+  onFormSubmit = newContact => {
+    newContact.id = nanoid();
     const availableInContactsList = this.state.contacts.some(
       contact =>
-        contact.name.toLowerCase().trim() === data.name.toLowerCase().trim()
+        contact.name.toLowerCase().trim() ===
+        newContact.name.toLowerCase().trim()
     );
 
     if (availableInContactsList) {
-      alert(`${data.name} is already in contacts.`);
+      alert(`${newContact.name} is already in contacts.`);
       return;
     }
 
     this.setState(state => ({
-      contacts: [data, ...state.contacts],
+      contacts: [newContact, ...state.contacts],
     }));
   };
 
-  filterContactsHandler = FilterName => {
-    this.setState({ filter: FilterName });
+  filterContactsHandler = e => {
+    this.setState({ filterValue: e.currentTarget.value });
   };
 
-  deleteContactItem = name => {
+  deleteContactItem = id => {
     const contactsList = this.state.contacts.filter(
-      contact => contact.name !== name
+      contact => contact.id !== id
     );
     this.setState(() => ({
       contacts: [...contactsList],
@@ -61,12 +72,21 @@ export class App extends Component {
           <Phonebook formSubmitHandler={this.onFormSubmit} />
         </Section>
         <Section title="Contacts">
-          <FilterContacts filterContactsHandler={this.filterContactsHandler} />
-          <ContactsList
-            contactsArr={this.state.contacts}
-            filterName={this.state.filter}
-            deleteContactItem={this.deleteContactItem}
+          <FilterContacts
+            filterValue={this.state.filterValue}
+            filterContactsHandler={this.filterContactsHandler}
           />
+          {this.state.contacts.length === 0 ? (
+            <h2>Your PhoneBook is empty:(</h2>
+          ) : (
+            <ContactsList
+              contactsArr={this.state.contacts}
+              normalizedFilterValue={this.state.filterValue
+                .toLowerCase()
+                .trim()}
+              deleteContactItem={this.deleteContactItem}
+            />
+          )}
         </Section>
       </div>
     );
